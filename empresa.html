@@ -1,0 +1,170 @@
+<?php
+ include("./config/database.php");
+ 
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Administar Empresa</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+	<!-- Custom styles for this template-->
+  <link href="css/sb-admin-2.min.css" rel="stylesheet">
+<style type="text/css">
+	background: rgb(133, 127, 133)
+ }
+ </style>
+</head>
+<body onLoad="cargar()">
+<div class="container-contact100">
+    <div class="wrap-contact100">
+        <div class="row">
+        	<div class="col-12" align="center">
+        		<div class="sidebar-brand-text"><h1>Administrar Empresa</h1></div>
+            <div>
+        </div>
+        <div class="row" style="background-color:#ffffff">
+        	<div class="col-6" align="center">
+                <div id="empresas_l"></div>
+            </div>
+            <div class="col-5">
+                <br>
+                <table width='' border='0' cellspacing='0' cellpadding='1'>
+                    <tr bgcolor='#3733FF' align='center'>
+                    <td><b><font color='#ffffff'>EMPRESA</font></b></td>
+                    </tr>
+                    <tr bgcolor='#3733FF'>
+                    <td>
+                        <table width='100%' border='0' cellspacing='0' cellpadding='4'>
+                        <tr bgcolor='#ffffff'>
+                        <td>
+                            <b>Nit: </b> <br>
+                            <input type='text' id='Nit_Empresa' value='' placeholder='Ingrese Nit'><br>
+                            <b>Nombre: </b> <br>
+                            <input type='text' id='Nombre_Empresa' value='' placeholder='Ingrese Nombres'><br>
+							<b>Direccion: </b> <br>
+                            <input type='text' id='Direccion_Empresa' value='' placeholder='Ingrese Direccion'><br>
+							<b>Telefono: </b> <br>
+                            <input type='text' id='Telefono_Empresa' value='' placeholder='Ingrese Telefono'><br>
+							<b>Email: </b> <br>
+                            <input type='text' id='Email_Empresa' value='' placeholder='Ingrese Email'><br>
+							<b>Pagina Web: </b> <br>
+                            <input type='text' id='Pagina_Web_Empresa' value='' placeholder='Ingrese Pagina'><br>
+                            
+                        </td>
+                        </tr>
+                        <tr bgcolor='#ffffff'>
+                        <td>
+                            <button class="alert-info" type='submit' name='AGREGAR_E' onClick='Agregar_E()'>Agregar Nuevo</button>
+                            
+                        </td>
+                        </tr>
+                        </table>
+                    </td>
+                    </tr>
+                    </table>
+                    <br>
+                    <div id="empresas_2"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+<script type='text/javascript'>
+function cargar(){
+	var parametros = {
+			"TIPO":"LISTAR"
+			}
+		$.ajax({
+			type: "POST",
+			url: "./config/funciones4.php",
+			data: parametros,
+			success: function(a) {
+				$('#empresas_l').html(a);
+			}
+		});
+}
+function Administrar_E(nit){
+		var parametros = {
+			"NIT": nit,
+			"TIPO":"CARGAR"
+			}
+		$.ajax({
+			type: "POST",
+			url: "./config/funciones4.php",
+			data: parametros,
+			success: function(a) {
+				$('#empresas_2').html(a);
+			}
+		});
+		}
+function Agregar_E(){
+		var parametros = {
+			"NIT_E": $("#Nit_Empresa").val(),
+			"NOMBRE_E": $("#Nombre_Empresa").val(),
+			"DIRECCION_E": $("#Direccion_Empresa").val(),
+            "TELEFONO_E": $("#Telefono_Empresa").val(),
+			"EMAIL_E": $("#Email_Empresa").val(),
+			"PAGINA_WEB_E": $("#Pagina_Web_Empresa").val(),
+			"TIPO":"NUEVO"
+			}
+		$.ajax({
+			type: "POST",
+			url: "./config/funciones4.php",
+			data: parametros,
+			success: function(a) {
+				cargar();
+				alert("El registro fue creado satisfactoriamente.");
+				$("#Nit_Empresa").val('');
+				$("#Nombre_Empresa").val('');
+				$("#Direccion_Empresa").val('');
+				$("#Telefono_Empresa").val('');
+                $("#Email_Empresa").val('');
+				$("#Pagina_Web_Empresa").val('');
+                
+			}
+		});
+		}
+function Modificar_E(nit){
+		var parametros = {
+			"NIT": nit,
+			"NIT_E": $("#NIT_E").val(),
+			"NOMBRE_E": $("#NOMBRE_E").val(),
+            "DIRECCION_E": $("#DIRECCION_E").val(),
+			"TELEFONO_E": $("#TELEFONO_E").val(),
+			"EMAIL_E": $("#EMAIL_E").val(),
+			"PAGINA_WEB_E": $("#PAGINA_WEB_E").val(),
+			
+			"TIPO":"MODIFICAR"
+			}
+		$.ajax({
+			type: "POST",
+			url: "./config/funciones4.php",
+			data: parametros,
+			success: function(a) {
+				$('#empresas_2').html('');
+				cargar();
+				alert("El registro ha sido modificado con éxito.");
+			}
+		});
+		}
+function Eliminar_E(nit){
+		var parametros = {
+			"NIT": nit,
+			"TIPO":"ELIMINAR"
+			}
+		$.ajax({
+			type: "POST",
+			url: "./config/funciones4.php",
+			data: parametros,
+			success: function(a) {
+				$('#empresas_2').html('');
+				cargar();
+				alert("El registro ha sido eliminado con éxito.");
+			}
+		});
+		}
+</script>
